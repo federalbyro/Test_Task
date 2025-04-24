@@ -1,3 +1,9 @@
+## Как запустить этого "монстра":
+```bash
+     make up
+     make migrate
+     make run
+```
 
 ## Какие запросы и как принимает данный сервис(вроде бы по ТЗ)
 
@@ -11,6 +17,8 @@ curl -X PUT http://localhost:2518/tokens/refresh \
 ```bash
 $ curl -X POST "http://localhost:2518/tokens/access?GUID=123e4567-e89b-12d3-a456-426614124000"
 ```
+
+
 
 
 
