@@ -1,26 +1,43 @@
 package service
 
-import "github.com/google/uuid"
+import (
+	"context"
 
-func (s *ServiceWorker) CreateTokens(userID, ipAddress string) (string, string, error) {
+	"github.com/google/uuid"
+)
 
+func(s *ServiceWorker)GenerateToken(ctx context.Context,userID, ipAddress string)(
+	string,
+	string,
+	string,
+	string,
+	error, 
+){
 	refreshAccessID := uuid.New().String()
 
 	accessToken, err := s.tokenGen.CreateAccessToken(userID, refreshAccessID, ipAddress)
 	if err != nil {
-		return "", "", err
+		return "", "","","", err
 	}
 
-	refreshToken, err := s.tokenGen.CreateRefreshToken()
+	refreshToken,newHash, err := s.tokenGen.GenerateRefreshToken(refreshAccessID)
 	if err != nil {
-		return "", "", err
+		return "", "","","", err
 	}
+	return refreshAccessID,accessToken,refreshToken,newHash, nil
 
-	refreshHash, err := s.tokenGen.HashRefreshToken(refreshToken)
-	if err != nil {
-		return "", "", err
+}
+
+func (s *ServiceWorker) CreateTokens(ctx context.Context,userID, ipAddress string) (string, string, error) {
+
+	rtID,access,refresh,hash,err := s.GenerateToken(ctx,userID,ipAddress)
+	if err!=nil{
+		return "","",err
 	}
-
-	err = s.Repository.SaveRefreshToken(refreshAccessID, userID, ipAddress, refreshHash)
-	return accessToken, refreshToken, err
+	flagReuse:=false
+	err = s.Repository.SaveRefreshToken(ctx, rtID, userID, ipAddress, hash,flagReuse)
+	if err!=nil{
+		return "","",err
+	}
+	return access, refresh, err
 }

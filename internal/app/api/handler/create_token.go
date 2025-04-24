@@ -8,6 +8,7 @@ import (
 
 func (h *TokenHandler) CreateTokens(c *gin.Context) {
 	userId := c.Query("GUID")
+	ctx := c.Request.Context()
 
 	if userId == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "bad GUID"})
@@ -16,7 +17,7 @@ func (h *TokenHandler) CreateTokens(c *gin.Context) {
 
 	clientIP := c.ClientIP()
 
-	accessToken, refreshToken, err := h.service.CreateTokens(userId, clientIP)
+	accessToken, refreshToken, err := h.service.CreateTokens(ctx, userId, clientIP)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

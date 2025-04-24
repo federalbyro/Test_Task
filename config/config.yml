@@ -1,5 +1,7 @@
 port: "2518"
 
+secret: "g#1SF2ye5"
+
 database:
   host: localhost
   port: 5432

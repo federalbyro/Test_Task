@@ -2,14 +2,14 @@ package token
 
 type TokenRegister interface {
 	CreateAccessToken(userID, tokenID, ipAddress string) (string, error)
-	GenerateRefreshToken() (string, error)
+	GenerateRefreshToken(rtid string) (string, string, error)
 	HashRefreshToken(token string) (string, error)
 }
 
-type TokenAlgoritm struct {
+type TokenManager struct {
 	secret string
 }
 
-func NewTokenGenerator(secret string) *TokenAlgoritm {
-	return &TokenAlgoritm{secret: secret}
+func NewTokenGenerator(secret string) *TokenManager {
+	return &TokenManager{secret: secret}
 }

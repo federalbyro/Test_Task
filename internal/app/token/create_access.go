@@ -6,7 +6,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-func (s *TokenAlgoritm) CreateAccessToken(userID, tokenID, ipAddress string) (string, error) {
+func (s *TokenManager) CreateAccessToken(userID, tokenID, ipAddress string) (string, error) {
 	claims := jwt.MapClaims{
 		"user_id": userID,
 		"ip":      ipAddress,
@@ -15,5 +15,6 @@ func (s *TokenAlgoritm) CreateAccessToken(userID, tokenID, ipAddress string) (st
 		"iat":     time.Now().Unix(),
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS512, claims)
+	
 	return token.SignedString([]byte(s.secret))
 }

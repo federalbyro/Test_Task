@@ -9,8 +9,9 @@ import (
 var configDirection string = "config/config.yml"
 
 type Config struct {
-	ServerPort string  `yaml:port`
-	Database   Postgre `yaml:database`
+	ServerPort string  `yaml:"port"`
+	JWTSecret string 	`yaml:"secret"`
+	Database   Postgre `yaml:"database"`
 }
 
 type Postgre struct {

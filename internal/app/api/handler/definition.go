@@ -13,10 +13,16 @@ type TokenHandler struct {
 	service service.ServiceRegister
 }
 
+func NewTokenHandler(serv service.ServiceRegister)*TokenHandler{
+	return &TokenHandler{
+		service: serv,
+	}
+}
+
+
 func (h *TokenHandler) RegisterRoutes(router *gin.Engine) {
 	tokens := router.Group("/tokens")
-
-	tokens.GET("/access", h.CreateTokens)
-	tokens.POST("/refresh", h.Update)
+	tokens.POST("/access", h.CreateTokens)
+	tokens.PUT("/refresh", h.Update)
 
 }
